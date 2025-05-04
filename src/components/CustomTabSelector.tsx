@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tab } from '../assets/types';
 
 interface CustomTabSelectorProps {
@@ -38,9 +39,8 @@ const CustomTabSelector: React.FC<CustomTabSelectorProps> = ({
         ))}
       </div>
       <div
-        className={`absolute top-1 bottom-1 rounded-lg transition-all duration-300 ease-in-out z-0 ${
-          activeTabIndex === 0 ? 'bg-secondary' : 'bg-primary'
-        }`}
+        className={`absolute top-1 bottom-1 rounded-lg transition-all duration-300 ease-in-out z-0 ${activeTabIndex === 0 ? 'bg-secondary' : 'bg-primary'
+          }`}
         style={{
           width: `${100 / tabs.length}%`,
           left: `${(activeTabIndex * 100) / tabs.length}%`,

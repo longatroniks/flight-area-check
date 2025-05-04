@@ -1,12 +1,15 @@
-import { ReactNode } from 'react';
+import React from 'react';
+import { DroneRestriction, PopulationStat } from '../assets/types';
 
-interface DataDisplayPanelProps<T> {
-  data: T[];
+type DisplayItem = DroneRestriction | PopulationStat;
+
+interface DataDisplayPanelProps<T extends DisplayItem> {
+  data: T[] | undefined;
   title?: string;
-  renderItem: (item: T, index: number) => ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
 }
 
-function DataDisplayPanel<T>({ data, title = "", renderItem }: DataDisplayPanelProps<T>) {
+const DataDisplayPanel = <T extends DisplayItem>({ data, title = "", renderItem }: DataDisplayPanelProps<T>) => {
   if (!data || data.length === 0) {
     return (
       <div className="w-full h-[50vh] md:w-1/2 md:h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-md flex items-center justify-center text-gray-400">
@@ -25,6 +28,6 @@ function DataDisplayPanel<T>({ data, title = "", renderItem }: DataDisplayPanelP
       </div>
     </div>
   );
-}
+};
 
 export default DataDisplayPanel;

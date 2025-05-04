@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TopBar from './components/nav/TopBar';
 import Logo from './components/icons/Logo';
 import TabDropdownComponent from './components/TabDropdownComponent';
@@ -22,7 +22,7 @@ const App: React.FC = () => {
   }>({});
 
   useEffect(() => {
-    const fetchLocations = async () => {
+    const fetchLocations = async (): Promise<void> => {
       try {
         setIsLoading(true);
         const data = await loadLocations();
@@ -80,7 +80,6 @@ const App: React.FC = () => {
               ? 'md:items-start md:justify-start'
               : 'md:items-center md:justify-center'}`}
           >
-
             <div className="w-full flex flex-col gap-4 justify-center items-center">
               <div className="text-center">
                 <h1 className="text-h3 md:text-h1 font-heading font-light">Flight Area Checker</h1>
@@ -116,26 +115,21 @@ const App: React.FC = () => {
 
           {isLoading && <Spinner color='secondary' />}
 
-          {(fetchedData.populationStats || fetchedData.droneRestrictions) && (
-            selectedTabId === 'pop' && fetchedData.populationStats ? (
-              <DataDisplayPanel<PopulationStat>
-                title={tabs.find(tab => tab.id === selectedTabId)?.name}
-                data={fetchedData.populationStats}
-                renderItem={(stat, index) => (
-                  <PopulationCard key={index} stat={stat} />
-                )}
-              />
-            ) : fetchedData.droneRestrictions ? (
-              <DataDisplayPanel<DroneRestriction>
-                title={tabs.find(tab => tab.id === selectedTabId)?.name}
-                data={fetchedData.droneRestrictions}
-                renderItem={(restriction, index) => (
-                  <DroneRestrictionCard key={index} restriction={restriction} />
-                )}
-              />
-            ) : null
-          )}
-
+          {selectedTabId === 'pop' && fetchedData.populationStats ? (
+            <DataDisplayPanel<PopulationStat>
+              title={tabs.find(tab => tab.id === selectedTabId)?.name}
+              data={fetchedData.populationStats}
+              renderItem={(stat, index) => <PopulationCard key={index} stat={stat} />}
+            />
+          ) : selectedTabId === 'drone' && fetchedData.droneRestrictions ? (
+            <DataDisplayPanel<DroneRestriction>
+              title={tabs.find(tab => tab.id === selectedTabId)?.name}
+              data={fetchedData.droneRestrictions}
+              renderItem={(restriction, index) => (
+                <DroneRestrictionCard key={index} restriction={restriction} />
+              )}
+            />
+          ) : null}
         </div>
       </main>
     </div>

@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 
 interface SearchDropdownProps<T> {
   items: T[];
@@ -21,7 +22,7 @@ const SearchDropdown = <T,>({
   getId,
   getLabel,
   onSelect,
-}: SearchDropdownProps<T>) => {
+}: SearchDropdownProps<T>): JSX.Element => {
   const filteredItems = items.filter((item) =>
     getLabel(item).toLowerCase().includes(searchTerm.toLowerCase())
   );

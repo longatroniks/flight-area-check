@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import { Tab, Location } from '../assets/types';
 import CustomTabSelector from './CustomTabSelector';
-import { useState } from 'react';
 import Button from './utils/Button';
 import SearchDropdown from './SearchDropdown';
 

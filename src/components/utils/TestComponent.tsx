@@ -1,3 +1,5 @@
+import React from "react";
+
 export const TestComponent: React.FC = () => {
   return (
     <div className="space-y-6 p-6 bg-gray-100 rounded-xl shadow-md font-sans">

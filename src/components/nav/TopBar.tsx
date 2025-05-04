@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 import { MenuItemProps } from "../../assets/types";
 
@@ -10,10 +10,10 @@ interface TopBarProps {
 const TopBar: React.FC<TopBarProps> = ({ logo: Logo, items }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleMenu = () => setIsOpen((prev) => !prev);
+    const toggleMenu = (): void => setIsOpen((prev) => !prev);
 
     useEffect(() => {
-        const handleResize = () => {
+        const handleResize = (): void => {
             if (window.innerWidth >= 768) {
                 setIsOpen(false);
             }

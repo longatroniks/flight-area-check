@@ -1,5 +1,6 @@
 import React from 'react';
 import { DroneRestriction } from '../../assets/types';
+import { droneRestrictionCardLabels } from '../../assets/static-values';
 
 interface DroneRestrictionCardProps {
     restriction: DroneRestriction;
@@ -8,17 +9,17 @@ interface DroneRestrictionCardProps {
 const DroneRestrictionCard: React.FC<DroneRestrictionCardProps> = ({ restriction }) => (
     <div className="rounded-xl p-4 bg-gray-50 shadow-sm border border-gray-100">
         <p className="text-sm text-gray-500">
-            <span className="font-medium text-gray-700">Zone:</span> {restriction.name}
+            <span className="font-medium text-gray-700">{droneRestrictionCardLabels.zone}:</span> {restriction.name}
         </p>
         <p className="text-sm text-gray-500">
-            <span className="font-medium text-gray-700">Restriction:</span> {restriction.restriction}
+            <span className="font-medium text-gray-700">{droneRestrictionCardLabels.restriction}:</span> {restriction.restriction}
         </p>
         <p className="text-sm text-gray-500">
-            <span className="font-medium text-gray-700">Message:</span> {restriction.message}
+            <span className="font-medium text-gray-700">{droneRestrictionCardLabels.message}:</span> {restriction.message}
         </p>
         {restriction.authority?.url && (
             <p className="text-sm text-gray-500">
-                <span className="font-medium text-gray-700">Authority:</span>{' '}
+                <span className="font-medium text-gray-700">{droneRestrictionCardLabels.authority}:</span>{' '}
                 <a
                     href={restriction.authority.url}
                     target="_blank"

@@ -24,9 +24,8 @@ const TopBar: React.FC<TopBarProps> = ({ logo: Logo, items }) => {
     }, []);
 
     return (
-        <nav
-            className={`bg-white w-full transition-all duration-300 ${isOpen ? "fixed inset-0 z-50 p-6" : "relative p-4 md:p-6"}`}
-        >
+        <nav className={`bg-white w-full transition-all duration-300 
+                        ${isOpen ? "fixed inset-0 z-50 p-6" : "relative p-4 md:p-6"}`}>
             <div className="flex flex-col md:flex-row items-start md:items-center w-full">
                 <div className="flex justify-between w-full items-center">
                     <Logo />
@@ -54,8 +53,8 @@ const TopBar: React.FC<TopBarProps> = ({ logo: Logo, items }) => {
 
                 <ul
                     className={`md:hidden flex flex-col space-y-4 w-full transition-all duration-300 ${isOpen
-                            ? "max-h-screen opacity-100 mt-6 overflow-visible"
-                            : "max-h-0 opacity-0 pointer-events-none overflow-hidden"
+                        ? "max-h-screen opacity-100 mt-6 overflow-visible"
+                        : "max-h-0 opacity-0 pointer-events-none overflow-hidden"
                         }`}
                 >
                     {items.map((item, index) => (

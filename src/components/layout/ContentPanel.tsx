@@ -11,17 +11,27 @@ interface ContentPanelProps {
   error?: string;
 }
 
-const ContentPanel: React.FC<ContentPanelProps> = ({ title, data, renderType, error }) => {
+const ContentPanel: React.FC<ContentPanelProps> = ({
+  title,
+  data,
+  renderType,
+  error,
+}) => {
   if (error) {
     return (
       <div className="w-full bg-white rounded-xl shadow-md border border-gray-200 p-4 max-h-[70vh] overflow-y-auto">
-        <h2 className="text-xl font-heading text-gray-700 mb-3 text-center md:text-left">{title}</h2>
+        <h2 className="text-xl font-heading text-gray-700 mb-3 text-center md:text-left">
+          {title}
+        </h2>
         <div className="flex flex-col items-center justify-center text-center text-gray-500 py-8 space-y-2">
           <AlertIcon />
-          <p className="text-base font-medium text-red-500">Error fetching data</p>
+          <p className="text-base font-medium text-red-500">
+            Error fetching data
+          </p>
           <p className="text-sm max-w-md text-gray-500">{error}</p>
           <p className="text-sm max-w-md text-gray-400 mt-2">
-            Please try a different location or check your connection and try again.
+            Please try a different location or check your connection and try
+            again.
           </p>
         </div>
       </div>
@@ -35,8 +45,9 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ title, data, renderType, er
           <AlertIcon />
           <p className="text-base font-medium">No data found</p>
           <p className="text-sm max-w-md text-gray-400">
-            Try searching for more populated areas like <strong>Silvapana</strong> for population density,
-            or locations near airports like <strong>Meyrin</strong> for drone restrictions.
+            Try searching for more populated areas like{' '}
+            <strong>Silvapana</strong> for population density, or locations near
+            airports like <strong>Meyrin</strong> for drone restrictions.
           </p>
         </div>
       );
@@ -60,7 +71,9 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ title, data, renderType, er
 
   return (
     <div className="w-full bg-white rounded-xl shadow-md border border-gray-200 p-4 max-h-[70vh] overflow-y-auto">
-      <h2 className="text-xl font-heading text-gray-700 mb-3 text-center md:text-left">{title}</h2>
+      <h2 className="text-xl font-heading text-gray-700 mb-3 text-center md:text-left">
+        {title}
+      </h2>
       {renderContent()}
     </div>
   );

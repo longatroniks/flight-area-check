@@ -32,15 +32,20 @@ const CustomTabSelector: React.FC<CustomTabSelectorProps> = ({
             onClick={() => handleTabChange(tab.id)}
             className="flex-1 p-3 text-center font-light text-sm relative z-10"
           >
-            <span className={selectedTabId === tab.id ? 'text-white' : 'text-gray-500'}>
+            <span
+              className={
+                selectedTabId === tab.id ? 'text-white' : 'text-gray-500'
+              }
+            >
               {tab.name}
             </span>
           </button>
         ))}
       </div>
       <div
-        className={`absolute top-1 bottom-1 rounded-lg transition-all duration-300 ease-in-out z-0 ${activeTabIndex === 0 ? 'bg-secondary' : 'bg-primary'
-          }`}
+        className={`absolute top-1 bottom-1 rounded-lg transition-all duration-300 ease-in-out z-0 ${
+          activeTabIndex === 0 ? 'bg-secondary' : 'bg-primary'
+        }`}
         style={{
           width: `${100 / tabs.length}%`,
           left: `${(activeTabIndex * 100) / tabs.length}%`,

@@ -8,7 +8,11 @@ import { useLocationContext } from '../../providers/LocationProvider';
 import ContentPanel from '../layout/ContentPanel';
 
 const HomePage: React.FC = () => {
-  const { locations, isLoading: isLoadingLocations, error: locationError } = useLocationContext();
+  const {
+    locations,
+    isLoading: isLoadingLocations,
+    error: locationError,
+  } = useLocationContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLocationId, setSelectedLocationId] = useState('');
@@ -20,7 +24,11 @@ const HomePage: React.FC = () => {
   }>({});
 
   const selectedTab = tabs.find((tab) => tab.id === selectedTabId);
-  const hasContent = !!(fetchedData.populationStats || fetchedData.droneRestrictions || fetchedData.error);
+  const hasContent = !!(
+    fetchedData.populationStats ||
+    fetchedData.droneRestrictions ||
+    fetchedData.error
+  );
 
   useEffect(() => {
     setFetchedData({});
@@ -48,16 +56,23 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="relative flex justify-center items-center min-h-[80vh] p-6">
-      <div className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContent ? 'md:justify-between' : 'justify-center'}`}>
-
+      <div
+        className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContent ? 'md:justify-between' : 'justify-center'}`}
+      >
         <div className="flex flex-1 flex-col gap-4 items-center justify-center">
           <div className="text-center">
-            <h1 className="text-h3 md:text-h1 font-heading font-light">{homePageContent.title}</h1>
-            <h4 className="text-h6 md:text-h4 font-sans font-light text-gray-500">{homePageContent.subtitle}</h4>
+            <h1 className="text-h3 md:text-h1 font-heading font-light">
+              {homePageContent.title}
+            </h1>
+            <h4 className="text-h6 md:text-h4 font-sans font-light text-gray-500">
+              {homePageContent.subtitle}
+            </h4>
           </div>
 
           {!isLoading && locationError && locations.length === 0 ? (
-            <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToLoadLocations}</p>
+            <p className="text-red-500 mt-4">
+              {homePageContent.errorMessages.failedToLoadLocations}
+            </p>
           ) : (
             <TabDropdownComponent
               tabs={tabs}
@@ -92,7 +107,9 @@ const HomePage: React.FC = () => {
 
       <LoadingOverlay
         isLoading={isLoading || isLoadingLocations}
-        message={isLoadingLocations ? 'Loading locations...' : 'Fetching data...'}
+        message={
+          isLoadingLocations ? 'Loading locations...' : 'Fetching data...'
+        }
       />
     </div>
   );

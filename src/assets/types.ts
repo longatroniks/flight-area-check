@@ -21,17 +21,17 @@ export type PopulationStat = {
 };
 
 export interface Location {
-    id: string;
-    name: string;
-    type: string;
-    lat: number;
-    lon: number;
+  id: string;
+  name: string;
+  type: string;
+  lat: number;
+  lon: number;
 }
 
 export interface Tab {
-    id: string;
-    name: string;
-    fetchMethod: (lat: number, lon: number) => Promise<any>;
+  id: string;
+  name: string;
+  fetchMethod: (lat: number, lon: number) => Promise<any>;
 }
 
 export interface MenuItemProps {

@@ -1,4 +1,4 @@
-import { DroneRestriction, PopulationStat } from "../../assets/types";
+import { DroneRestriction, PopulationStat } from '../../assets/types';
 
 const BASE_URL = import.meta.env.VITE_GEOADMIN_BASE!;
 const DRONE_LAYER = import.meta.env.VITE_DRONE_LAYER!;
@@ -11,7 +11,7 @@ const SRID = import.meta.env.VITE_SRID!;
 const buildGeoUrl = (layer: string, lat: number, lon: number): string => {
   const params = new URLSearchParams({
     layers: `all:${layer}`,
-    geometryType: "esriGeometryPoint",
+    geometryType: 'esriGeometryPoint',
     sr: SRID,
     lang: LANG,
     returnGeometry: RETURN_GEOMETRY,
@@ -27,7 +27,7 @@ export const fetchDroneRestrictions = async (
   lon: number
 ): Promise<DroneRestriction[]> => {
   const res = await fetch(buildGeoUrl(DRONE_LAYER, lat, lon));
-  if (!res.ok) throw new Error("Failed to fetch drone restrictions");
+  if (!res.ok) throw new Error('Failed to fetch drone restrictions');
   const data = await res.json();
 
   return data.results.map((result: any): DroneRestriction => {
@@ -39,8 +39,8 @@ export const fetchDroneRestrictions = async (
       message: a.zone_message_en,
       restrictionId: a.zone_restriction_id,
       authority: {
-        name: a.auth_name_en?.[0] ?? "",
-        service: a.auth_service_en?.[0] ?? "",
+        name: a.auth_name_en?.[0] ?? '',
+        service: a.auth_service_en?.[0] ?? '',
         email: a.auth_email?.[0],
         phone: a.auth_phone?.[0],
         url: a.auth_url_en?.[0],
@@ -56,14 +56,15 @@ export const fetchPopulationDensity = async (
   lon: number
 ): Promise<PopulationStat[]> => {
   const res = await fetch(buildGeoUrl(POP_LAYER, lat, lon));
-  if (!res.ok) throw new Error("Failed to fetch population density");
+  if (!res.ok) throw new Error('Failed to fetch population density');
   const data = await res.json();
 
   return data.results
-    .map((result: any): PopulationStat => ({
-      year: result.attributes.i_year,
-      value: result.attributes.number,
-    }))
+    .map(
+      (result: any): PopulationStat => ({
+        year: result.attributes.i_year,
+        value: result.attributes.number,
+      })
+    )
     .sort((a: PopulationStat, b: PopulationStat) => b.year - a.year);
 };
-

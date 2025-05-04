@@ -14,29 +14,31 @@ The **Axpo Flight Area Checker** is a React-based web application that allows us
 ## Project Structure
 
 ```
-.env 
-.env.example 
-.gitignore 
-cypress/ 
-public/ 
-src/ 
-  assets/ 
-  components/ 
-  providers/ 
-  services/ 
-  App.tsx 
+.env
+.env.example
+.gitignore
+cypress/
+public/
+src/
+  assets/
+  components/
+  providers/
+  services/
+  App.tsx
   main.tsx
 ```
 
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd axpo-flight-area-check
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -83,6 +85,7 @@ The app requires the following environment variables to be set in a `.env` file:
 Run Cypress tests to ensure the app works as expected:
 
 - Open the Cypress test runner:
+
   ```bash
   npm run cypress:open
   ```

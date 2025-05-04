@@ -14,7 +14,7 @@ interface TabDropdownComponentProps {
   button: {
     text?: string;
     onClick: () => void;
-  }
+  };
 }
 
 const TabDropdownComponent: React.FC<TabDropdownComponentProps> = ({
@@ -49,7 +49,9 @@ const TabDropdownComponent: React.FC<TabDropdownComponentProps> = ({
           setSearchTerm={setSearchTerm}
           isDropdownOpen={isDropdownOpen}
           setIsDropdownOpen={setIsDropdownOpen}
-          selectedStyleVariant={selectedTabId === 'pop' ? 'primary' : 'secondary'}
+          selectedStyleVariant={
+            selectedTabId === 'pop' ? 'primary' : 'secondary'
+          }
           getId={(loc) => loc.id}
           getLabel={(loc) => loc.name}
           onSelect={(loc) => {
@@ -63,7 +65,6 @@ const TabDropdownComponent: React.FC<TabDropdownComponentProps> = ({
         >
           {button?.text}
         </Button>
-
       </div>
     </div>
   );

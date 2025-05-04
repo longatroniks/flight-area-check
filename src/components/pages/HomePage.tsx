@@ -10,14 +10,17 @@ import ContentPanel from '../layout/ContentPanel';
 const HomePage: React.FC = () => {
   const { locations, isLoading: isLoadingLocations, error: locationError } = useLocationContext();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedLocationId, setSelectedLocationId] = useState<string>('');
-  const [selectedTabId, setSelectedTabId] = useState<string>('drone');
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedLocationId, setSelectedLocationId] = useState('');
+  const [selectedTabId, setSelectedTabId] = useState('drone');
   const [fetchedData, setFetchedData] = useState<{
     populationStats?: PopulationStat[];
     droneRestrictions?: DroneRestriction[];
     error?: string;
   }>({});
+
+  const selectedTab = tabs.find((tab) => tab.id === selectedTabId);
+  const hasContent = !!(fetchedData.populationStats || fetchedData.droneRestrictions || fetchedData.error);
 
   useEffect(() => {
     setFetchedData({});
@@ -25,18 +28,16 @@ const HomePage: React.FC = () => {
 
   const handleFetchData = async () => {
     const location = locations.find((loc) => loc.id === selectedLocationId);
-    const tab = tabs.find((tab) => tab.id === selectedTabId);
-    if (!location || !tab) return;
+    if (!location || !selectedTab) return;
 
     setIsLoading(true);
     try {
-      const result = await tab.fetchMethod(location.lat, location.lon);
-
-      if (selectedTabId === 'pop') {
-        setFetchedData({ populationStats: result });
-      } else if (selectedTabId === 'drone') {
-        setFetchedData({ droneRestrictions: result });
-      }
+      const result = await selectedTab.fetchMethod(location.lat, location.lon);
+      setFetchedData(
+        selectedTabId === 'pop'
+          ? { populationStats: result }
+          : { droneRestrictions: result }
+      );
     } catch (err) {
       console.error(err);
       setFetchedData({ error: 'Failed to fetch data' });
@@ -45,12 +46,9 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const selectedTab = tabs.find((tab) => tab.id === selectedTabId);
-  const hasContentToShow = !!(fetchedData.populationStats || fetchedData.droneRestrictions);
-
   return (
     <div className="relative flex justify-center items-center min-h-[80vh] p-6">
-      <div className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContentToShow ? 'md:justify-between' : 'justify-center'}`}>
+      <div className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContent ? 'md:justify-between' : 'justify-center'}`}>
 
         <div className="flex flex-1 flex-col gap-4 items-center justify-center">
           <div className="text-center">
@@ -61,32 +59,32 @@ const HomePage: React.FC = () => {
           {!isLoading && locationError && locations.length === 0 ? (
             <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToLoadLocations}</p>
           ) : (
-            <>
-              <TabDropdownComponent
-                tabs={tabs}
-                assets={locations}
-                selectedLocationId={selectedLocationId}
-                setSelectedLocationId={setSelectedLocationId}
-                selectedTabId={selectedTabId}
-                setSelectedTabId={setSelectedTabId}
-                button={{
-                  text: homePageContent.buttonText,
-                  onClick: handleFetchData,
-                }}
-              />
-              {fetchedData.error && (
-                <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToFetchData}</p>
-              )}
-            </>
+            <TabDropdownComponent
+              tabs={tabs}
+              assets={locations}
+              selectedLocationId={selectedLocationId}
+              setSelectedLocationId={setSelectedLocationId}
+              selectedTabId={selectedTabId}
+              setSelectedTabId={setSelectedTabId}
+              button={{
+                text: homePageContent.buttonText,
+                onClick: handleFetchData,
+              }}
+            />
           )}
         </div>
 
-        {hasContentToShow && (
+        {hasContent && (
           <div className="flex flex-1 flex-row w-full">
             <ContentPanel
               title={selectedTab?.name || ''}
-              data={selectedTabId === 'pop' ? fetchedData.populationStats || [] : fetchedData.droneRestrictions || []}
+              data={
+                selectedTabId === 'pop'
+                  ? fetchedData.populationStats || []
+                  : fetchedData.droneRestrictions || []
+              }
               renderType={selectedTabId === 'pop' ? 'population' : 'drone'}
+              error={fetchedData.error}
             />
           </div>
         )}

@@ -1,4 +1,3 @@
-// src/components/AlertIcon.tsx
 import React from 'react';
 
 const AlertIcon: React.FC = () => {

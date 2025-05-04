@@ -35,7 +35,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({ title, data, renderType, er
           <AlertIcon />
           <p className="text-base font-medium">No data found</p>
           <p className="text-sm max-w-md text-gray-400">
-            Try searching for more populated areas like <strong>Silvapana</strong> for population density, 
+            Try searching for more populated areas like <strong>Silvapana</strong> for population density,
             or locations near airports like <strong>Meyrin</strong> for drone restrictions.
           </p>
         </div>

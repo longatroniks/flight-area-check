@@ -1,9 +1,7 @@
 import { Location } from '../../assets/types';
 
 export async function loadLocations(): Promise<Location[]> {
-  const apiUrl = import.meta.env.MODE === 'development'
-    ? import.meta.env.VITE_LOCATIONS_API_URL
-    : import.meta.env.VITE_LOCATIONS_API_URL_PROD;
+  const apiUrl = import.meta.env.VITE_LOCATIONS_API_URL;
 
   const res = await fetch(apiUrl);
   if (!res.ok) {

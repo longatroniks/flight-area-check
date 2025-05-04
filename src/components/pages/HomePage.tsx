@@ -1,18 +1,18 @@
-// HomePage.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { tabs } from '../../assets/static-values';
-import { PopulationStat, DroneRestriction, Location } from '../../assets/types';
-import { loadLocations } from '../../services/api/locationApiService';
+import { PopulationStat, DroneRestriction } from '../../assets/types';
 import DroneRestrictionCard from '../cards/DroneRestrictionCard';
 import PopulationCard from '../cards/PopulationCard';
 import DataDisplayPanel from '../DataDisplayPanel';
 import TabDropdownComponent from '../TabDropdownComponent';
 import LoadingOverlay from '../utils/LoadingOverlay';
 import { homePageContent } from '../../assets/static-values';
+import { useLocationContext } from '../../providers/LocationProvider';
 
 const HomePage: React.FC = () => {
+  const { locations, isLoading: isLoadingLocations, error: locationError } = useLocationContext();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocationId, setSelectedLocationId] = useState<string>("");
   const [selectedTabId, setSelectedTabId] = useState<string>("drone");
   const [fetchedData, setFetchedData] = useState<{
@@ -20,22 +20,6 @@ const HomePage: React.FC = () => {
     droneRestrictions?: DroneRestriction[];
     error?: string;
   }>({});
-
-  useEffect(() => {
-    const fetchLocations = async (): Promise<void> => {
-      try {
-        setIsLoading(true);
-        const data = await loadLocations();
-        setLocations(data);
-      } catch (err) {
-        setFetchedData({ error: 'Failed to load locations' });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchLocations();
-  }, []);
 
   useEffect(() => {
     setFetchedData({});
@@ -65,17 +49,19 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="relative flex justify-center items-center min-h-[80vh] p-6">
-      <div className={`flex flex-col w-full max-w-6xl gap-8 
-                          transition-all duration-500 ease-in-out
-                          ${fetchedData.populationStats || fetchedData.droneRestrictions
-                              ? 'md:flex-row md:justify-between md:items-center'
-                              : 'md:items-center md:justify-center'}`}
+      <div
+        className={`flex flex-col w-full max-w-6xl gap-8 
+          transition-all duration-500 ease-in-out
+          ${fetchedData.populationStats || fetchedData.droneRestrictions
+            ? 'md:flex-row md:justify-between md:items-center'
+            : 'md:items-center md:justify-center'}`}
       >
-        <div className={`w-full md:w-1/2 flex flex-col 
-                        transition-all duration-500 ease-in-out
-                        ${fetchedData.populationStats || fetchedData.droneRestrictions
-                            ? 'md:items-start md:justify-start'
-                            : 'md:items-center md:justify-center'}`}
+        <div
+          className={`w-full md:w-1/2 flex flex-col 
+            transition-all duration-500 ease-in-out
+            ${fetchedData.populationStats || fetchedData.droneRestrictions
+              ? 'md:items-start md:justify-start'
+              : 'md:items-center md:justify-center'}`}
         >
           <div className="w-full flex flex-col gap-4 justify-center items-center">
             <div className="text-center">
@@ -83,7 +69,7 @@ const HomePage: React.FC = () => {
               <h3 className="text-h6 md:text-h4 font-sans font-light text-gray-500">{homePageContent.subtitle}</h3>
             </div>
 
-            {!isLoading && fetchedData.error && locations.length === 0 ? (
+            {!isLoading && locationError && locations.length === 0 ? (
               <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToLoadLocations}</p>
             ) : (
               <>
@@ -99,7 +85,11 @@ const HomePage: React.FC = () => {
                     onClick: handleFetchData,
                   }}
                 />
-                {fetchedData.error && <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToFetchData}</p>}
+                {fetchedData.error && (
+                  <p className="text-red-500 mt-4">
+                    {homePageContent.errorMessages.failedToFetchData}
+                  </p>
+                )}
               </>
             )}
           </div>
@@ -123,8 +113,8 @@ const HomePage: React.FC = () => {
       </div>
 
       <LoadingOverlay
-        isLoading={isLoading}
-        message={locations.length === 0 ? "Loading locations..." : "Fetching data..."}
+        isLoading={isLoading || isLoadingLocations}
+        message={isLoadingLocations ? 'Loading locations...' : 'Fetching data...'}
       />
     </div>
   );

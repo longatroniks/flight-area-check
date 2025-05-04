@@ -5,7 +5,7 @@ import { menuItems } from '../../assets/static-values';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="relative min-h-screen bg-gray-50">
+    <div className="relative min-h-screen">
       <header>
         <TopBar logo={Logo} items={menuItems} />
       </header>

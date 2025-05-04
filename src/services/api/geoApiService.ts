@@ -62,7 +62,7 @@ export const fetchPopulationDensity = async (
   return data.results
     .map((result: any): PopulationStat => ({
       year: result.attributes.i_year,
-      value: result.attributes.reli,
+      value: result.attributes.number,
     }))
     .sort((a: PopulationStat, b: PopulationStat) => b.year - a.year);
 };

@@ -20,7 +20,7 @@ export const droneRestrictionCardLabels = {
 
 export const populationCardLabels = {
   year: "Year",
-  population: "Population",
+  population: "Population Density",
 };
 
 

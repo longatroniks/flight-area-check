@@ -1,6 +1,6 @@
 import React from 'react';
-import { DroneRestriction } from '../../assets/types';
-import { droneRestrictionCardLabels } from '../../assets/static-values';
+import { droneRestrictionCardLabels } from '../assets/static-values';
+import { DroneRestriction } from '../assets/types';
 
 interface DroneRestrictionCardProps {
     restriction: DroneRestriction;

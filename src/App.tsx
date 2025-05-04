@@ -1,7 +1,7 @@
 // App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/utils/Layout';
+import Layout from './components/layout/Layout';
 import AboutPage from './components/pages/AboutPage';
 import HomePage from './components/pages/HomePage';
 

@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { tabs } from '../../assets/static-values';
 import { PopulationStat, DroneRestriction } from '../../assets/types';
-import DroneRestrictionCard from '../cards/DroneRestrictionCard';
-import PopulationCard from '../cards/PopulationCard';
-import DataDisplayPanel from '../DataDisplayPanel';
 import TabDropdownComponent from '../TabDropdownComponent';
 import LoadingOverlay from '../utils/LoadingOverlay';
 import { homePageContent } from '../../assets/static-values';
 import { useLocationContext } from '../../providers/LocationProvider';
+import ContentPanel from '../layout/ContentPanel';
 
 const HomePage: React.FC = () => {
   const { locations, isLoading: isLoadingLocations, error: locationError } = useLocationContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedLocationId, setSelectedLocationId] = useState<string>("");
-  const [selectedTabId, setSelectedTabId] = useState<string>("drone");
+  const [selectedLocationId, setSelectedLocationId] = useState<string>('');
+  const [selectedTabId, setSelectedTabId] = useState<string>('drone');
   const [fetchedData, setFetchedData] = useState<{
     populationStats?: PopulationStat[];
     droneRestrictions?: DroneRestriction[];
@@ -26,8 +24,8 @@ const HomePage: React.FC = () => {
   }, [selectedTabId]);
 
   const handleFetchData = async () => {
-    const location = locations.find(loc => loc.id === selectedLocationId);
-    const tab = tabs.find(tab => tab.id === selectedTabId);
+    const location = locations.find((loc) => loc.id === selectedLocationId);
+    const tab = tabs.find((tab) => tab.id === selectedTabId);
     if (!location || !tab) return;
 
     setIsLoading(true);
@@ -47,69 +45,51 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const selectedTab = tabs.find((tab) => tab.id === selectedTabId);
+  const hasContentToShow = !!(fetchedData.populationStats || fetchedData.droneRestrictions);
+
   return (
     <div className="relative flex justify-center items-center min-h-[80vh] p-6">
-      <div
-        className={`flex flex-col w-full max-w-6xl gap-8 
-          transition-all duration-500 ease-in-out
-          ${fetchedData.populationStats || fetchedData.droneRestrictions
-            ? 'md:flex-row md:justify-between md:items-center'
-            : 'md:items-center md:justify-center'}`}
-      >
-        <div
-          className={`w-full md:w-1/2 flex flex-col 
-            transition-all duration-500 ease-in-out
-            ${fetchedData.populationStats || fetchedData.droneRestrictions
-              ? 'md:items-start md:justify-start'
-              : 'md:items-center md:justify-center'}`}
-        >
-          <div className="w-full flex flex-col gap-4 justify-center items-center">
-            <div className="text-center">
-              <h1 className="text-h3 md:text-h1 font-heading font-light">{homePageContent.title}</h1>
-              <h3 className="text-h6 md:text-h4 font-sans font-light text-gray-500">{homePageContent.subtitle}</h3>
-            </div>
+      <div className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContentToShow ? 'md:justify-between' : 'justify-center'}`}>
 
-            {!isLoading && locationError && locations.length === 0 ? (
-              <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToLoadLocations}</p>
-            ) : (
-              <>
-                <TabDropdownComponent
-                  tabs={tabs}
-                  assets={locations}
-                  selectedLocationId={selectedLocationId}
-                  setSelectedLocationId={setSelectedLocationId}
-                  selectedTabId={selectedTabId}
-                  setSelectedTabId={setSelectedTabId}
-                  button={{
-                    text: homePageContent.buttonText,
-                    onClick: handleFetchData,
-                  }}
-                />
-                {fetchedData.error && (
-                  <p className="text-red-500 mt-4">
-                    {homePageContent.errorMessages.failedToFetchData}
-                  </p>
-                )}
-              </>
-            )}
+        <div className="flex flex-1 flex-col gap-4 items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-h3 md:text-h1 font-heading font-light">{homePageContent.title}</h1>
+            <h4 className="text-h6 md:text-h4 font-sans font-light text-gray-500">{homePageContent.subtitle}</h4>
           </div>
+
+          {!isLoading && locationError && locations.length === 0 ? (
+            <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToLoadLocations}</p>
+          ) : (
+            <>
+              <TabDropdownComponent
+                tabs={tabs}
+                assets={locations}
+                selectedLocationId={selectedLocationId}
+                setSelectedLocationId={setSelectedLocationId}
+                selectedTabId={selectedTabId}
+                setSelectedTabId={setSelectedTabId}
+                button={{
+                  text: homePageContent.buttonText,
+                  onClick: handleFetchData,
+                }}
+              />
+              {fetchedData.error && (
+                <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToFetchData}</p>
+              )}
+            </>
+          )}
         </div>
 
-        {selectedTabId === 'pop' && fetchedData.populationStats ? (
-          <DataDisplayPanel<PopulationStat>
-            title={tabs.find(tab => tab.id === selectedTabId)?.name}
-            data={fetchedData.populationStats}
-            renderItem={(stat, index) => <PopulationCard key={index} stat={stat} />}
-          />
-        ) : selectedTabId === 'drone' && fetchedData.droneRestrictions ? (
-          <DataDisplayPanel<DroneRestriction>
-            title={tabs.find(tab => tab.id === selectedTabId)?.name}
-            data={fetchedData.droneRestrictions}
-            renderItem={(restriction, index) => (
-              <DroneRestrictionCard key={index} restriction={restriction} />
-            )}
-          />
-        ) : null}
+        {hasContentToShow && (
+          <div className="flex flex-1 flex-row w-full">
+            <ContentPanel
+              title={selectedTab?.name || ''}
+              data={selectedTabId === 'pop' ? fetchedData.populationStats || [] : fetchedData.droneRestrictions || []}
+              renderType={selectedTabId === 'pop' ? 'population' : 'drone'}
+            />
+          </div>
+        )}
       </div>
 
       <LoadingOverlay

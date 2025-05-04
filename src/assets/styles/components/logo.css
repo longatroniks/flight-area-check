@@ -1,0 +1,19 @@
+.bg-gradient {
+    animation: gradientShift 10s linear infinite;
+    transform: translateX(0);
+    will-change: transform;
+    }
+    
+    @keyframes gradientShift {
+    0% {
+        transform: translateX(0%);
+    }
+    50% {
+        transform: translateX(-300%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+    }
+      
+      

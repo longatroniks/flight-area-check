@@ -1,0 +1,14 @@
+GET 
+https://api3.geo.admin.ch/rest/services/api/MapServer/identify?layers=all:ch.bazl.einschraenkungen-drohnen&geometryType=esriGeometryPoint&sr=4326&lang=en&returnGeometry=false&tolerance=0&geometry={"x": 8.56383,"y": 47.45539}
+
+
+
+Population density (GET)
+
+https://api3.geo.admin.ch/rest/services/api/MapServer/identify?layers=all:ch.bfs.volkszaehlung-bevoelkerungsstatistik_einwohner&geometryType=esriGeometryPoint&sr=4326&lang=en&returnGeometry=false&tolerance=0&geometry={"x": <longitude>, "y": <latitude>}
+
+
+
+Drone restrictions (GET)
+
+https://api3.geo.admin.ch/rest/services/api/MapServer/identify?layers=all:ch.bazl.einschraenkungen-drohnen&geometryType=esriGeometryPoint&sr=4326&lang=en&returnGeometry=false&tolerance=0&geometry={"x": <longitude>,"y": <latitude>}

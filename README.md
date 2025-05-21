@@ -1,6 +1,6 @@
-# Axpo Flight Area Checker
+# Flight Area Checker
 
-The **Axpo Flight Area Checker** is a React-based web application that allows users to investigate airspace restrictions for drones and view population density statistics for selected locations.
+The **Flight Area Checker** is a React-based web application that allows users to investigate airspace restrictions for drones and view population density statistics for selected locations.
 
 ## Technologies Used
 
@@ -34,7 +34,7 @@ src/
 
    ```bash
    git clone <repository-url>
-   cd axpo-flight-area-check
+   cd -flight-area-check
    ```
 
 2. Install dependencies:

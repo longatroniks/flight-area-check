@@ -27,8 +27,6 @@ const PopulationChart: React.FC<PopulationChartProps> = ({ data }) => {
         <XAxis
           dataKey="year"
           tick={{ fontSize: 10 }}
-          padding={{ left: 0, right: 0 }}
-          tickMargin={8}
         />
         <YAxis
           tick={{ fontSize: 10 }}
@@ -39,9 +37,9 @@ const PopulationChart: React.FC<PopulationChartProps> = ({ data }) => {
         <Line
           type="monotone"
           dataKey="value"
-          stroke="#3b82f6"
+          stroke="#4545cf"
           strokeWidth={2}
-          dot={{ r: 3 }}
+          dot={{ r: 4 }}
         />
       </LineChart>
     </ResponsiveContainer>

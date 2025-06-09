@@ -31,7 +31,6 @@ export interface Location {
 export interface Tab {
   id: string;
   name: string;
-  fetchMethod: (lat: number, lon: number) => Promise<any>;
 }
 
 export interface MenuItemProps {

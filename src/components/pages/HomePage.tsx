@@ -1,78 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { tabs } from '../../assets/static-values';
-import { PopulationStat, DroneRestriction } from '../../assets/types';
+import React, { useState, useCallback } from 'react';
+import { useGeoApi } from '../../providers/GeoApiProvider';
+import { useLocationContext } from '../../providers/LocationProvider';
 import TabDropdownComponent from '../TabDropdownComponent';
 import LoadingOverlay from '../utils/LoadingOverlay';
-import { homePageContent } from '../../assets/static-values';
-import { useLocationContext } from '../../providers/LocationProvider';
 import ContentPanel from '../layout/ContentPanel';
+import { homePageContent } from '../../assets/static-values';
 
 const HomePage: React.FC = () => {
-  const {
-    locations,
-    isLoading: isLoadingLocations,
-    error: locationError,
-  } = useLocationContext();
+  const { locations, isLoading: isLoadingLocations, error: locationError } = useLocationContext();
+  const { tabs, fetchData, isLoading, data, error } = useGeoApi();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedLocationId, setSelectedLocationId] = useState('');
   const [selectedTabId, setSelectedTabId] = useState('drone');
-  const [fetchedData, setFetchedData] = useState<{
-    populationStats?: PopulationStat[];
-    droneRestrictions?: DroneRestriction[];
-    error?: string;
-  }>({});
 
   const selectedTab = tabs.find((tab) => tab.id === selectedTabId);
-  const hasContent = !!(
-    fetchedData.populationStats ||
-    fetchedData.droneRestrictions ||
-    fetchedData.error
-  );
+  const selectedLocation = locations.find((loc) => loc.id === selectedLocationId);
 
-  useEffect(() => {
-    setFetchedData({});
-  }, [selectedTabId]);
+  const hasContent = data.populationStats?.length || data.droneRestrictions?.length || error;
 
-  const handleFetchData = async () => {
-    const location = locations.find((loc) => loc.id === selectedLocationId);
-    if (!location || !selectedTab) return;
-
-    setIsLoading(true);
+  const handleFetchData = useCallback(async () => {
+    if (!selectedLocation || !selectedTab) return;
     try {
-      const result = await selectedTab.fetchMethod(location.lat, location.lon);
-      setFetchedData(
-        selectedTabId === 'pop'
-          ? { populationStats: result }
-          : { droneRestrictions: result }
-      );
-    } catch (err) {
-      console.error(err);
-      setFetchedData({ error: 'Failed to fetch data' });
-    } finally {
-      setIsLoading(false);
+      await fetchData(selectedTab.id, selectedLocation);
+    } catch {
     }
-  };
+  }, [fetchData, selectedLocation, selectedTab]);
 
   return (
     <div className="relative flex justify-center items-center min-h-[80vh] p-6">
       <div
-        className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContent ? 'md:justify-between' : 'justify-center'}`}
+        className={`flex flex-col md:flex-row w-full max-w-6xl gap-8 transition-all duration-500 ease-in-out ${hasContent ? 'md:justify-between' : 'justify-center'
+          }`}
       >
         <div className="flex flex-1 flex-col gap-4 items-center justify-center">
           <div className="text-center">
-            <h1 className="text-h3 md:text-h1 font-heading font-light">
-              {homePageContent.title}
-            </h1>
-            <h4 className="text-h6 md:text-h4 font-sans font-light text-gray-500">
-              {homePageContent.subtitle}
-            </h4>
+            <h1 className="text-h3 md:text-h1 font-heading font-light">{homePageContent.title}</h1>
+            <h4 className="text-h6 md:text-h4 font-sans font-light text-gray-500">{homePageContent.subtitle}</h4>
           </div>
 
           {!isLoading && locationError && locations.length === 0 ? (
-            <p className="text-red-500 mt-4">
-              {homePageContent.errorMessages.failedToLoadLocations}
-            </p>
+            <p className="text-red-500 mt-4">{homePageContent.errorMessages.failedToLoadLocations}</p>
           ) : (
             <TabDropdownComponent
               tabs={tabs}
@@ -93,24 +60,15 @@ const HomePage: React.FC = () => {
           <div className="flex flex-1 flex-row w-full">
             <ContentPanel
               title={selectedTab?.name || ''}
-              data={
-                selectedTabId === 'pop'
-                  ? fetchedData.populationStats || []
-                  : fetchedData.droneRestrictions || []
-              }
+              data={selectedTabId === 'pop' ? data.populationStats || [] : data.droneRestrictions || []}
               renderType={selectedTabId === 'pop' ? 'population' : 'drone'}
-              error={fetchedData.error}
+              error={error || undefined}
             />
           </div>
         )}
       </div>
 
-      <LoadingOverlay
-        isLoading={isLoading || isLoadingLocations}
-        message={
-          isLoadingLocations ? 'Loading locations...' : 'Fetching data...'
-        }
-      />
+      <LoadingOverlay isLoading={isLoading || isLoadingLocations} message={isLoadingLocations ? 'Loading locations...' : 'Fetching data...'} />
     </div>
   );
 };

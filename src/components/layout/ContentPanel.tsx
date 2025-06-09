@@ -15,7 +15,7 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
   title,
   data,
   renderType,
-  error,
+  error ,
 }) => {
   if (error) {
     return (
@@ -23,6 +23,10 @@ const ContentPanel: React.FC<ContentPanelProps> = ({
         <h2 className="text-xl font-heading text-gray-700 mb-3 text-center md:text-left">
           {title}
         </h2>
+        {/*
+          Currently does not render at any point as this logic is handled further up 
+          Should be extracted to separate component such as ErrorComponent 
+        */}
         <div className="flex flex-col items-center justify-center text-center text-gray-500 py-8 space-y-2">
           <AlertIcon />
           <p className="text-base font-medium text-red-500">

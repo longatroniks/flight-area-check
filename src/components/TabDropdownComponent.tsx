@@ -30,7 +30,7 @@ const TabDropdownComponent: React.FC<TabDropdownComponentProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4 bg-white p-4 rounded-2xl shadow-md w-full max-w-md mx-auto text-sm font-heading">
+    <div className="flex flex-col gap-4 bg-white p-4 rounded-2xl shadow-md w-full max-w-full md:max-w-md mx-auto text-sm font-heading">
       <CustomTabSelector
         tabs={tabs}
         selectedTabId={selectedTabId}
